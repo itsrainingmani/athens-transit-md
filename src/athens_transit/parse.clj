@@ -1,8 +1,6 @@
 (ns athens-transit-md.parse
-  (:require [clojure.string :as string]
-            [datascript.transit :as dt]
-            [datascript.core :as d]
-            [datascript.db :as db])
+  (:require [datascript.transit :as dt]
+            [datascript.core :as d])
   (:gen-class))
 
 (def INDEX_FILE "index.transit")
