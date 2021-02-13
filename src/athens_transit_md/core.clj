@@ -14,4 +14,5 @@
       (case action
         "start" (println "starting server with: " options)
         "stop" (println "stopping server with: " options)
-        "status" (println "status   server with: " options)))))
+        "status" (println "status   server with: " options)
+        "convert" (println "Converting index.transit file to .md files") options))))

@@ -29,6 +29,9 @@
     :default 0
     ;; Use assoc-fn to create non-idempotent options
     :assoc-fn (fn [m k _] (update-in m [k] inc))]
+   ["-f" "--file" "Transit File path"
+    :default (str "index.transit")
+    :default-desc "Transit file"]
    ["-h" "--help"]])
 
 (defn usage [options-summary]
@@ -45,6 +48,7 @@
     "  start    Start a new server"
     "  stop     Stop an existing server"
     "  status   Print a server's status"
+    "  convert  Begin Conversion process"
     ""
     "Please refer to the manual page for more information."]))
 
@@ -56,7 +60,7 @@
   "make sure the 'command' part of the command line is correct"
   [arguments]
   (and (= 1 (count arguments))
-       (#{"start" "stop" "status"} (first arguments))))
+       (#{"start" "stop" "status" "convert"} (first arguments))))
 
 (defn invalid-action [summary arguments]
   (str (usage summary)
