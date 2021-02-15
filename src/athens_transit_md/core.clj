@@ -12,7 +12,4 @@
       ;; where the values are parsed rich objects if the command line specification
       ;; chooses to use :parse-fn 
       (case action
-        "start" (println "starting server with: " options)
-        "stop" (println "stopping server with: " options)
-        "status" (println "status   server with: " options)
         "convert" (println "Converting index.transit file to .md files") options))))
