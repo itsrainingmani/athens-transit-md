@@ -3,18 +3,17 @@
             [datascript.core :as d])
   (:gen-class))
 
-(def INDEX_FILE "index.transit")
+(def INDEX_FILE "index.transit") ;; Default path to the index.transit file
+(def dsdb (atom #{}))            ;; dsdb is initially an empty atom map
 
 (defn read-transit-file
-  "Reads the index.transit file from the path given"
+  "Reads the index.transit file from the path given and loads it into the dsdb atom"
   ([]
    (read-transit-file INDEX_FILE))
   ([index-file-path]
    (let [transit-file (slurp index-file-path)
          dt-db (dt/read-transit-str transit-file)]
-     dt-db)))
-
-(def dsdb (atom (read-transit-file)))
+     (reset! dsdb dt-db))))
 
 (defn e-by-av
   [a v]
