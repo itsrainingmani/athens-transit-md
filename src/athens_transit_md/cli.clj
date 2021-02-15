@@ -39,8 +39,8 @@
     options-summary
     ""
     "Actions:"
-    "  status   Print a server's status"
     "  convert  Begin Conversion process"
+    "  dump     Dump info on files in db"
     ""
     "Please refer to the manual page for more information."]))
 
