@@ -9,10 +9,15 @@
   []
   (.format (java.text.SimpleDateFormat. "yyyyMMdd-HHmmss") (new java.util.Date)))
 
-(defn touch-timestamp-folder
-  []
-  (let [folder-name (str "./athens-" (now-format))]
-    (.exists (io/file folder-name))))
+(defn touch-output-folder
+  ([]
+   (let [folder-name (str "./athens-" (now-format))]
+     (touch-output-folder folder-name)))
+  ([folder-name]
+   (let [folder-exists? (.exists (io/file folder-name))]
+     (if-not folder-exists?
+       (.mkdir (io/file folder-name))
+       (prn "The folder already exists")))))
 
 (defn read-transit-file
   "Reads the index.transit file from the path given and loads it into the dsdb atom"
