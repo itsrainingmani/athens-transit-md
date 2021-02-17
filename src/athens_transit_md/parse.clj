@@ -4,6 +4,16 @@
             [clojure.java.io :as io])
   (:gen-class))
 
+
+(defn now-format
+  []
+  (.format (java.text.SimpleDateFormat. "yyyyMMdd-HHmmss") (new java.util.Date)))
+
+(defn touch-timestamp-folder
+  []
+  (let [folder-name (str "./athens-" (now-format))]
+    (.exists (io/file folder-name))))
+
 (defn read-transit-file
   "Reads the index.transit file from the path given and loads it into the dsdb atom"
   ([]
@@ -34,8 +44,9 @@
 
 
 (defn convert-all-pages
-  []
-  (let [all-pages (db/get-all-pages)
+  [f o]
+  (let [_ (read-transit-file f)
+        all-pages (db/get-all-pages)
         all-page-uids (map :block/uid all-pages)
         all-md (map convert-to-md all-page-uids)]
     (prn all-md)))

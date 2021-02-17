@@ -8,16 +8,6 @@
 (def dsdb (atom #{}))            ;; dsdb is initially an empty atom map
 
 
-(defn now-format
-  []
-  (.format (java.text.SimpleDateFormat. "yyyyMMdd-HHmmss") (new java.util.Date)))
-
-
-(defn touch-timestamp-folder
-  []
-  (let [folder-name (str "./athens-" (now-format))]
-    ()))
-
 (defn e-by-av
   [a v]
   (-> (d/datoms @dsdb :avet a v) first :e))
