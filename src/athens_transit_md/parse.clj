@@ -5,13 +5,9 @@
   (:gen-class))
 
 
-(defn now-format
-  []
-  (.format (java.text.SimpleDateFormat. "yyyyMMdd-HHmmss") (new java.util.Date)))
-
 (defn touch-output-folder
   ([]
-   (let [folder-name (str "./athens-" (now-format))]
+   (let [folder-name (str "./athens-" (db/now-format))]
      (touch-output-folder folder-name)))
   ([folder-name]
    (let [folder-exists? (.exists (io/file folder-name))]
@@ -47,11 +43,22 @@
          (map #(walk-str 0 %))
          (apply str))))
 
+(defn write-to-file
+  [title content]
+  (spit title content))
+
+(defn construct-file-path
+  [title o]
+  (str (.getPath (io/file o title)) ".md"))
 
 (defn convert-all-pages
   [f o]
   (let [_ (read-transit-file f)
         all-pages (db/get-all-pages)
-        all-page-uids (map :block/uid all-pages)
-        all-md (map convert-to-md all-page-uids)]
-    (prn all-md)))
+        all-page-map (map #(select-keys % [:node/title :block/uid]) all-pages)
+        all-page-fixed (map #(update % :node/title construct-file-path o) all-page-map)]
+    (touch-output-folder o)  ;; Create the Output Folder
+    (->> all-page-fixed
+         (map (fn [{node-title :node/title
+                    block-uid  :block/uid}]
+                (write-to-file node-title (convert-to-md block-uid)))))))
