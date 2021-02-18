@@ -52,13 +52,13 @@
   (str (.getPath (io/file o title)) ".md"))
 
 (defn convert-all-pages
-  [f o]
-  (let [_ (read-transit-file f)
-        all-pages (db/get-all-pages)
+  [o]
+  (let [all-pages (db/get-all-pages)
         all-page-map (map #(select-keys % [:node/title :block/uid]) all-pages)
         all-page-fixed (map #(update % :node/title construct-file-path o) all-page-map)]
     (touch-output-folder o)  ;; Create the Output Folder
     (->> all-page-fixed
          (map (fn [{node-title :node/title
                     block-uid  :block/uid}]
+                (prn (str "Writing to " node-title))
                 (write-to-file node-title (convert-to-md block-uid)))))))
