@@ -1,6 +1,7 @@
 (ns athens-transit-md.core
   (:require [clojure.tools.cli :refer [parse-opts]]
-            [athens-transit-md.cli :as cli])
+            [athens-transit-md.cli :as cli]
+            [athens-transit-md.parse :as parse])
   (:gen-class))
 
 (defn -main [& args]
@@ -12,4 +13,8 @@
       ;; where the values are parsed rich objects if the command line specification
       ;; chooses to use :parse-fn 
       (case action
-        "convert" (println "Converting index.transit file to .md files") options))))
+        "convert" (do
+                    (println "Reading from index.transit file")
+                    (parse/read-transit-file (:file options))
+                    (println "Converting index.transit file to .md files")
+                    (parse/convert-all-pages (:output options)))))))
